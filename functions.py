@@ -1,32 +1,36 @@
+#===========================================
+#================== IMPORTS ================
 import csv
 #===========================================
 #============= READ DATA() =================
 
 def read_data(fichero_csv):
-    datos = {}
+    diccionario = {}
     with open(fichero_csv, "r") as f:
         reader = csv.reader(f)
         atributos = next(reader)
         for i, row in enumerate(reader):
             if row[0] != "":
-                datos["dato"+str(i+1)] = {}
+                diccionario["dato"+str(i+1)] = {}
                 for j, atributo in enumerate(atributos):
-                    datos["dato"+str(i+1)][atributo] = row[j]
-    return datos
+                    diccionario["dato"+str(i+1)][atributo] = row[j]
+    if len(diccionario) < 10:
+        raise ValueError("El fichero tiene menos de 10 lineas con valor en todos los atributos")
+    return diccionario
 
 #===========================================
 #=============== SLPLIT() ==================
 
-def split(dicionario, atributo):
+def split(dicionario_split, atributo):
     diccionario_white = {}
     diccionario_red = {}
-    for i in dicionario:
-        if atributo in dicionario[i]:
-            if dicionario[i][atributo] == "white":
-                diccionario_white[i] = dicionario[i]
+    for i in dicionario_split:
+        if atributo in dicionario_split[i]:
+            if dicionario_split[i][atributo] == "white":
+                diccionario_white[i] = dicionario_split[i]
                 del diccionario_white[i][atributo]
-            elif dicionario[i][atributo] == "red":
-                diccionario_red[i] = dicionario[i]
+            elif dicionario_split[i][atributo] == "red":
+                diccionario_red[i] = dicionario_split[i]
                 del diccionario_red[i][atributo]
             else:
                 raise ValueError("El atributo seleccionado no existe")
@@ -37,11 +41,11 @@ def split(dicionario, atributo):
 #===========================================
 #=============== REDUCE() ==================
 
-def reduce(diccionario, atributo):
+def reduce(diccionario_reduce, atributo):
     lista_reduce = []
-    for i in diccionario:
-        if atributo in diccionario[i]:
-            lista_reduce.append(diccionario[i][atributo])
+    for i in diccionario_reduce:
+        if atributo in diccionario_reduce[i]:
+            lista_reduce.append(diccionario_reduce[i][atributo])
         else:
             raise ValueError("El atributo seleccionado no existe")
     return lista_reduce
@@ -60,7 +64,12 @@ def silhouette(lista1, lista2):
         for k in lista2:
             b += (abs(float(i) - float(k)))**2
         b = b / len(lista2)
-        
+
+        if a > b:
+            s = (b - a) / a
+        else:
+            s = (b - a) / b
+    return s
 
 
 
