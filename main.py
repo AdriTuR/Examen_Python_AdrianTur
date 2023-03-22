@@ -11,13 +11,11 @@ try:
 except ValueError as e:
     print("Ha ocurrido la excepcion", e)
 
-
 #split()
 try:
     diccionario_white, diccionario_red = functions.split(data, "type")
 except ValueError as e:
     print("Ha ocurrido la excepcion", e)
-
 
 #reduce()
 try:
@@ -25,7 +23,6 @@ try:
     lista_density = functions.reduce(data, "density")
 except ValueError as e:
     print("Ha ocurrido la excepcion", e)
-
 
 #silhouette()
 try:
